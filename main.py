@@ -1,24 +1,27 @@
 import asyncio
 
 from fastmcp import FastMCP
-from fastmcp.server.context import Context
 
 from middlewares.auth import RequireBackendSessionIDMiddleware
-from backend.connector import backend_connector
+from tools.user.tool import user_mcp
+from tools.question.tool import question_mcp
+from tools.management.tool import management_mcp
 
 
-mcp = FastMCP("智能算法刷题平台——MCP服务器")
-mcp.add_middleware(RequireBackendSessionIDMiddleware())
+async def setup():
+    smartoj_mcp = FastMCP("智能算法刷题平台——MCP服务器")
+    smartoj_mcp.add_middleware(RequireBackendSessionIDMiddleware())
 
+    await smartoj_mcp.import_server(user_mcp)
+    await smartoj_mcp.import_server(question_mcp)
+    await smartoj_mcp.import_server(management_mcp)
 
-@mcp.tool(description="获取当前登录用户的信息")
-async def get_current_user(context: Context):
-    return await backend_connector.get_cuttent_user(context)
+    await smartoj_mcp.run_async("http")
 
 
 if __name__ == "__main__":
     try:
-        asyncio.run(mcp.run_async("http"))
+        asyncio.run(setup())
     except KeyboardInterrupt:
         pass
  
