@@ -1,0 +1,14 @@
+[project]
+name = "smartoj-mcp-server"
+version = "0.1.0"
+description = "smartoj-mcp-server"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "fastmcp>=2.12.2",
+]
+
+[[tool.uv.index]]
+name = "tsinghua"
+url = "https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple"
+default = true
