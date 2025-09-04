@@ -14,6 +14,7 @@ from httpx._types import (
     TimeoutTypes
 )
 from fastmcp.server.context import Context
+from fastmcp.server.dependencies import get_context
 
 from .utils import get_backend_session_id
 
@@ -25,7 +26,8 @@ class AsyncClient(httpx.AsyncClient):
     以至于在发送请求时自动在请求头中添加 cookies 进行身份验证
     """
 
-    def construct_cookies(self, context: Context, cookies: CookieTypes | None = None):
+    def construct_cookies(self, cookies: CookieTypes | None = None):
+        context: Context = get_context()
         session_id = get_backend_session_id(context)
         _cookies = cookies or {}
         _cookies["session_id"] = session_id
@@ -33,8 +35,7 @@ class AsyncClient(httpx.AsyncClient):
 
     async def get(
         self,
-        url: str, 
-        context: Context,
+        url: str,
         *, 
         params: QueryParamTypes | None = None,
         headers: HeaderTypes | None = None,
@@ -48,7 +49,7 @@ class AsyncClient(httpx.AsyncClient):
             url, 
             params=params, 
             headers=headers, 
-            cookies=self.construct_cookies(context, cookies),
+            cookies=self.construct_cookies(cookies),
             auth=auth, 
             follow_redirects=follow_redirects, 
             timeout=timeout, 
@@ -58,7 +59,6 @@ class AsyncClient(httpx.AsyncClient):
     async def post(
         self,
         url: str,
-        context: Context,
         *,
         content: RequestContent | None = None,
         data: RequestData | None = None,
@@ -80,7 +80,7 @@ class AsyncClient(httpx.AsyncClient):
             json=json,
             params=params,
             headers=headers,
-            cookies=self.construct_cookies(context, cookies),
+            cookies=self.construct_cookies(cookies),
             auth=auth,
             follow_redirects=follow_redirects,
             timeout=timeout,
@@ -90,7 +90,6 @@ class AsyncClient(httpx.AsyncClient):
     async def put(
         self,
         url: str,
-        context: Context,
         *,
         content: RequestContent | None = None,
         data: RequestData | None = None,
@@ -112,7 +111,7 @@ class AsyncClient(httpx.AsyncClient):
             json=json,
             params=params,
             headers=headers,
-            cookies=self.construct_cookies(context, cookies),
+            cookies=self.construct_cookies(cookies),
             auth=auth,
             follow_redirects=follow_redirects,
             timeout=timeout,
@@ -122,7 +121,6 @@ class AsyncClient(httpx.AsyncClient):
     async def delete(
         self,
         url: str,
-        context: Context,
         *,
         params: QueryParamTypes | None = None,
         headers: HeaderTypes | None = None,
@@ -136,7 +134,7 @@ class AsyncClient(httpx.AsyncClient):
             url,
             params=params,
             headers=headers,
-            cookies=self.construct_cookies(context, cookies),
+            cookies=self.construct_cookies(cookies),
             auth=auth,
             follow_redirects=follow_redirects,
             timeout=timeout,
@@ -146,7 +144,6 @@ class AsyncClient(httpx.AsyncClient):
     async def patch(
         self,
         url: str,
-        context: Context,
         *,
         content: RequestContent | None = None,
         data: RequestData | None = None,
@@ -168,7 +165,7 @@ class AsyncClient(httpx.AsyncClient):
             json=json,
             params=params,
             headers=headers,
-            cookies=self.construct_cookies(context, cookies),
+            cookies=self.construct_cookies(cookies),
             auth=auth,
             follow_redirects=follow_redirects,
             timeout=timeout,
