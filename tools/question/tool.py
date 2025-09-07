@@ -31,3 +31,30 @@ async def query_all_programming_languages() -> str:
             result += f"{key}: {value} "
         result += "\n"
     return result
+
+
+@question_mcp.tool
+async def query_all_tags():
+    """
+    查询所有标签信息。
+
+    在调用这个工具的时候你不需要输入任何参数。
+
+    你可以通过这个工具查询到数据库中所有的标签的详细信息。
+
+    一个标签通常包括以下字段：
+    - id: 该标签在数据库中的唯一标识
+    - name: 标签的名称
+    - score: 标签的分数。分数越高，代表该标签对应的题目的难度系数越高
+    """
+    response = await question_connector.query_all_tags()
+    if not response:
+        return "获取标签失败"
+    results = []
+    for tag in response["data"]:
+        if tag["is_deleted"]:
+            continue
+        tag.pop("is_deleted")
+        tag.pop("created_at")
+        results.append(tag)
+    return results
