@@ -18,6 +18,7 @@ from httpx._types import (
 from fastmcp.server.context import Context
 from fastmcp.server.dependencies import get_context
 
+from exceptions.auth import InvalidBackendSessionIDError
 from .utils import get_backend_session_id
 
 
@@ -40,6 +41,8 @@ class AsyncClient(httpx.AsyncClient):
 
     def parse_response(self, response: Response):
         if response.status_code != 200:
+            if response.status_code == 401:
+                raise InvalidBackendSessionIDError()  # 无效的登录状态
             return {}
         try:
             json_response = response.json()

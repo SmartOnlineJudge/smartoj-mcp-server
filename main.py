@@ -10,8 +10,11 @@ from tools.management.tool import management_mcp
 
 async def setup():
     smartoj_mcp = FastMCP("智能算法刷题平台——MCP服务器")
+
+    # 添加中间件
     smartoj_mcp.add_middleware(RequireBackendSessionIDMiddleware())
 
+    # 导入工具
     await smartoj_mcp.import_server(user_mcp)
     await smartoj_mcp.import_server(question_mcp)
     await smartoj_mcp.import_server(management_mcp)
