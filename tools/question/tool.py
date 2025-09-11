@@ -164,3 +164,38 @@ async def query_tests_of_question(question_id: int):
     if not data:
         return "该题目暂时没有测试用例"
     return data
+
+
+@question_mcp.tool
+async def query_question_info(question_id: int):
+    """
+    查询一个题目的详细信息。
+
+    在调用这个工具时你需要输入一个参数：
+    - question_id: 题目的id
+
+    你可以通过这个工具查询到数据库中指定题目的部分详细信息。
+
+    你可以获取到该题目的部分字段对应的信息：
+    - id: 该题目在数据库中的唯一标识
+    - title: 题目的标题
+    - description: 题目的描述
+    - difficulty: 题目的难度
+    - tags: 题目的标签
+        - name: 标签的名称
+    """
+    response = await question_connector.query_question_info(question_id)
+    if not response:
+        return "该题目不存在"
+    try:
+        data: dict = response["data"]
+    except KeyError:
+        return "获取题目信息失败"
+    result = {
+        "id": data["id"],
+        "title": data["title"],
+        "description": data["description"],
+        "difficulty": data["difficulty"],
+        "tags": [tag["tag"]["name"] for tag in data["tags"]],
+    }
+    return result
