@@ -74,3 +74,11 @@ class QuestionBackendConnector(BaseBackendConnector):
             "code_framework": code_framework,
         }
         return await self.client.post("/question/solving-framework", json=json_data)
+
+    async def create_question(self, title: str, description: str, difficulty: str):
+        json_data = {
+            "title": title,
+            "description": description,
+            "difficulty": difficulty,
+        }
+        return await self.client.post("/question", json=json_data)

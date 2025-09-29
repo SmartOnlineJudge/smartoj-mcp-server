@@ -170,6 +170,16 @@ if __name__ == "__main__":
             </ul>
           </p>
         </li>
+        <li>
+          <p><strong>create_question - 创建一道新题目</strong></p>
+          <p>
+            <ul>
+              <li><code>title</code>：题目的名称（字符串，必须）</li>
+              <li><code>description</code>：题目的描述（字符串，必须）</li>
+              <li><code>difficulty</code>：题目的难度（字符串，必须，且只能是这三个值：easy, medium, hard）</li>
+            </ul>
+          </p>
+        </li>
     </ul>
 </details>
 

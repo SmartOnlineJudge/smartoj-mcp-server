@@ -276,3 +276,20 @@ async def create_solving_framework_for_question(
     if not response:
         return "创建解题框架失败"
     return "创建解题框架成功"
+
+
+@question_mcp.tool
+async def create_question(title: str, description: str, difficulty: str):
+    """
+    创建一道新的题目。
+
+    在调用这个工具时你需要输入三个参数：
+    - title: 新题目的名称
+    - description: 新题目的描述
+    - difficulty: 新题目的难度（只能是这三个值：easy, medium, hard）
+    """
+    response = await question_connector.create_question(title, description, difficulty)
+    if not response:
+        return "创建题目失败"
+    question_id = response["data"]["question_id"]
+    return "创建题目成功，新题目ID为：{}".format(question_id)
