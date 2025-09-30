@@ -1,3 +1,5 @@
+import asyncio
+
 from fastmcp import FastMCP
 
 from .connector import QuestionBackendConnector
@@ -279,7 +281,12 @@ async def create_solving_framework_for_question(
 
 
 @question_mcp.tool
-async def create_question(title: str, description: str, difficulty: str):
+async def create_question(
+    title: str, 
+    description: str, 
+    difficulty: str,
+    tags: list[int]
+):
     """
     创建一道新的题目。
 
@@ -292,4 +299,6 @@ async def create_question(title: str, description: str, difficulty: str):
     if not response:
         return "创建题目失败"
     question_id = response["data"]["question_id"]
+    tasks = [question_connector.create_tag_for_question(question_id, tag_id) for tag_id in set(tags)]
+    await asyncio.gather(*tasks)
     return "创建题目成功，新题目ID为：{}".format(question_id)

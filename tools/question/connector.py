@@ -82,3 +82,10 @@ class QuestionBackendConnector(BaseBackendConnector):
             "difficulty": difficulty,
         }
         return await self.client.post("/question", json=json_data)
+
+    async def create_tag_for_question(self, question_id: int, tag_id: int):
+        json_data = {
+            "question_id": question_id,
+            "tag_id": tag_id,
+        }
+        return await self.client.post("/question/question-tag", json=json_data)
