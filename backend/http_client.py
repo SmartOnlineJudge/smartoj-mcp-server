@@ -48,8 +48,6 @@ class AsyncClient(httpx.AsyncClient):
             json_response = response.json()
         except JSONDecodeError:
             return {}
-        if json_response["code"] != 200:
-            return {}
         return json_response
 
     async def get(

@@ -199,8 +199,8 @@ async def create_test_for_question(question_id: int, input_output: str):
     - input_output: 测试用例的输入输出信息。
     """
     response = await question_connector.detect_permission(question_id)
-    if not response:
-        return "权限不足"
+    if response["code"] != 200:
+        return "权限不足或当前操作对象不存在"
     response = await question_connector.create_test_for_question(question_id, input_output)
     if not response:
         return "创建测试用例失败"
@@ -224,13 +224,15 @@ async def create_memory_time_limit_for_question(
     - language_id: 题目的编程语言的id
     """
     response = await question_connector.detect_permission(question_id)
-    if not response:
-        return "权限不足"
+    if response["code"] != 200:
+        return "权限不足或当前操作对象不存在"
     response = await question_connector.create_memory_time_limit_for_question(
         question_id, language_id, memory_limit, time_limit
     )
     if not response:
         return "创建内存时间限制失败"
+    if response["code"] != 200:
+        return response["message"]
     return "创建内存时间限制成功"
 
 
@@ -249,11 +251,13 @@ async def create_judge_template_for_question(
     - code: 评测模板的代码
     """
     response = await question_connector.detect_permission(question_id)
-    if not response:
-        return "权限不足"
+    if response["code"] != 200:
+        return "权限不足或当前操作对象不存在"
     response = await question_connector.create_judge_template_for_question(question_id, language_id, code)
     if not response:
         return "创建判题模板失败"
+    if response["code"] != 200:
+        return response["message"]
     return "创建判题模板成功"
 
 
@@ -272,11 +276,13 @@ async def create_solving_framework_for_question(
     - code_framework: 解题框架的代码
     """
     response = await question_connector.detect_permission(question_id)
-    if not response:
-        return "权限不足"
+    if response["code"] != 200:
+        return "权限不足或当前操作对象不存在"
     response = await question_connector.create_solving_framework_for_question(question_id, language_id, code_framework)
     if not response:
         return "创建解题框架失败"
+    if response["code"] != 200:
+        return response["message"]
     return "创建解题框架成功"
 
 
@@ -305,22 +311,29 @@ async def create_question(
 
 
 @question_mcp.tool
-async def update_judge_template_for_question(judge_template_id: int, code: str):
+async def update_judge_template_for_question(question_id: int, judge_template_id: int, code: str):
     """
     更新一个题目的判题模板。
 
     在调用这个工具时你需要输入两个参数：
+    - question_id: 这个判题模板对应的题目ID
     - judge_template_id: 判题模板的id
     - code: 判题模板的代码
     """
+    response = await question_connector.detect_permission(question_id)
+    if response["code"] != 200:
+        return "权限不足或当前操作对象不存在"
     response = await question_connector.update_judge_template_for_question(judge_template_id, code)
     if not response:
         return "更新判题模板失败"
+    if response["code"] != 200:
+        return response["message"]
     return "更新判题模板成功"
 
 
 @question_mcp.tool
 async def update_memory_time_limit_for_question(
+    question_id: int,
     memory_time_limit_id: int, 
     memory_limit: int, 
     time_limit: int
@@ -329,28 +342,40 @@ async def update_memory_time_limit_for_question(
     更新一个题目的内存时间限制。
 
     在调用这个工具时你需要输入三个参数：
+    - question_id: 这个内存时间限制对应的题目ID
     - memory_time_limit_id: 内存时间限制的id
     - memory_limit: 题目的内存限制(单位 MB)
     - time_limit: 题目的时间限制(单位 ms)
     """
+    response = await question_connector.detect_permission(question_id)
+    if response["code"] != 200:
+        return "权限不足或当前操作对象不存在"
     response = await question_connector.update_memory_time_limit_for_question(
         memory_time_limit_id, memory_limit, time_limit
     )
     if not response:
         return "更新内存时间限制失败"
+    if response["code"] != 200:
+        return response["message"]
     return "更新内存时间限制成功"
 
 
 @question_mcp.tool
-async def update_solving_framework_for_question(solving_framework_id: int, code_framework: str):
+async def update_solving_framework_for_question(question_id: int, solving_framework_id: int, code_framework: str):
     """
     更新一个题目的解题框架。
 
     在调用这个工具时你需要输入两个参数：
+    - question_id: 这个解题框架对应的题目ID
     - solving_framework_id: 解题框架的id
     - code_framework: 解题框架的代码
     """
+    response = await question_connector.detect_permission(question_id)
+    if response["code"] != 200:
+        return "权限不足或当前操作对象不存在"
     response = await question_connector.update_solving_framework_for_question(solving_framework_id, code_framework)
     if not response:
         return "更新解题框架失败"
+    if response["code"] != 200:
+        return response["message"]
     return "更新解题框架成功"
