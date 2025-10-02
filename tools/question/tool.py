@@ -302,3 +302,55 @@ async def create_question(
     tasks = [question_connector.create_tag_for_question(question_id, tag_id) for tag_id in set(tags)]
     await asyncio.gather(*tasks)
     return "创建题目成功，新题目ID为：{}".format(question_id)
+
+
+@question_mcp.tool
+async def update_judge_template_for_question(judge_template_id: int, code: str):
+    """
+    更新一个题目的判题模板。
+
+    在调用这个工具时你需要输入两个参数：
+    - judge_template_id: 判题模板的id
+    - code: 判题模板的代码
+    """
+    response = await question_connector.update_judge_template_for_question(judge_template_id, code)
+    if not response:
+        return "更新判题模板失败"
+    return "更新判题模板成功"
+
+
+@question_mcp.tool
+async def update_memory_time_limit_for_question(
+    memory_time_limit_id: int, 
+    memory_limit: int, 
+    time_limit: int
+):
+    """
+    更新一个题目的内存时间限制。
+
+    在调用这个工具时你需要输入三个参数：
+    - memory_time_limit_id: 内存时间限制的id
+    - memory_limit: 题目的内存限制(单位 MB)
+    - time_limit: 题目的时间限制(单位 ms)
+    """
+    response = await question_connector.update_memory_time_limit_for_question(
+        memory_time_limit_id, memory_limit, time_limit
+    )
+    if not response:
+        return "更新内存时间限制失败"
+    return "更新内存时间限制成功"
+
+
+@question_mcp.tool
+async def update_solving_framework_for_question(solving_framework_id: int, code_framework: str):
+    """
+    更新一个题目的解题框架。
+
+    在调用这个工具时你需要输入两个参数：
+    - solving_framework_id: 解题框架的id
+    - code_framework: 解题框架的代码
+    """
+    response = await question_connector.update_solving_framework_for_question(solving_framework_id, code_framework)
+    if not response:
+        return "更新解题框架失败"
+    return "更新解题框架成功"

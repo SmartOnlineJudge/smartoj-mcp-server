@@ -89,3 +89,28 @@ class QuestionBackendConnector(BaseBackendConnector):
             "tag_id": tag_id,
         }
         return await self.client.post("/question/question-tag", json=json_data)
+
+    async def update_judge_template_for_question(self, judge_template_id: int, code: str):
+        json_data = {"id": judge_template_id, "code": code}
+        return await self.client.put("/question/judge-template", json=json_data)
+
+    async def update_memory_time_limit_for_question(
+        self, 
+        memory_time_limit_id: int, 
+        memory_limit: int, 
+        time_limit: int
+    ):
+        json_data = {
+            "id": memory_time_limit_id,
+            "memory_limit": memory_limit,
+            "time_limit": time_limit,
+        }
+        return await self.client.put("/question/memory-time-limit", json=json_data)
+
+    async def update_solving_framework_for_question(self, solving_framework_id: int, code_framework: str):
+        json_data = {
+            "id": solving_framework_id,
+            "code_framework": code_framework,
+        }
+        return await self.client.put("/question/solving-framework", json=json_data)
+    
