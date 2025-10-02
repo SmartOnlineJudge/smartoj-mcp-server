@@ -300,6 +300,7 @@ async def create_question(
     - title: 新题目的名称
     - description: 新题目的描述
     - difficulty: 新题目的难度（只能是这三个值：easy, medium, hard）
+    - tags: 新题目的标签列表，列表元素是标签ID
     """
     response = await question_connector.create_question(title, description, difficulty)
     if not response:

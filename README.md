@@ -177,6 +177,7 @@ if __name__ == "__main__":
               <li><code>title</code>：题目的名称（字符串，必须）</li>
               <li><code>description</code>：题目的描述（字符串，必须）</li>
               <li><code>difficulty</code>：题目的难度（字符串，必须，且只能是这三个值：easy, medium, hard）</li>
+              <li><code>tags</code>：题目的所有标签（整型列表，必须，列表元素是标签ID）</li>
             </ul>
           </p>
         </li>
@@ -207,7 +208,21 @@ if __name__ == "__main__":
           <li><code>code</code>：判题模板的代码（字符串，必须）</li>
         </ul>
       </p>
-    </li>  
+    </li>
+    <li>
+      <p>
+        <strong>
+          update_judge_template_for_question - 更新一个题目的判题模板
+        </strong>
+      </p>
+      <p>
+        <ul>
+          <li><code>question_id</code>：题目ID（整型，必须）</li>
+          <li><code>judge_template_id</code>：判题模板ID（整型，必须）</li>
+          <li><code>code</code>：判题模板的代码（字符串，必须）</li>
+        </ul>
+      </p>
+    </li>
   </ul>
 </details>
 
@@ -233,12 +248,22 @@ if __name__ == "__main__":
       </p>
     </li>
     <li>
-      <p>
-          <strong>create_memory_time_limit_for_question - 为指定题目指定编程语言创建一个内存时间限制</strong></p>
+      <p><strong>create_memory_time_limit_for_question - 为指定题目指定编程语言创建一个内存时间限制</strong></p>
       <p>
         <ul>
           <li><code>question_id</code>：题目ID（整型，必须）</li>
           <li><code>language_id</code>：编程语言ID（整型，必须）</li>
+          <li><code>memory_limit</code>：内存限制，单位 MB（整型，必须）</li>
+          <li><code>time_limit</code>：时间限制，单位 ms（整型，必须）</li>
+        </ul>
+      </p>
+    </li>
+    <li>
+      <p><strong>update_memory_time_limit_for_question - 更新一个题目的内存时间限制</strong></p>
+      <p>
+        <ul>
+          <li><code>question_id</code>：题目ID（整型，必须）</li>
+          <li><code>memory_time_limit_id</code>：需要修改的内存时间限制ID（整型，必须）</li>
           <li><code>memory_limit</code>：内存限制，单位 MB（整型，必须）</li>
           <li><code>time_limit</code>：时间限制，单位 ms（整型，必须）</li>
         </ul>
@@ -268,12 +293,22 @@ if __name__ == "__main__":
         </ul>
       </p>
     </li>
-	<li>
+	  <li>
       <p><strong>create_solving_framework_for_question - 为指定题目指定编程语言创建一个解题框架</strong></p>
       <p>
         <ul>
           <li><code>question_id</code>：题目ID（整型，必须）</li>
           <li><code>language_id</code>：编程语言ID（整型，必须）</li>
+          <li><code>code_framework</code>：解题框架的代码（字符串，必须）</li>
+        </ul>
+      </p>
+    </li>
+    <li>
+      <p><strong>update_solving_framework_for_question - 更新一个题目的解题框架</strong></p>
+      <p>
+        <ul>
+          <li><code>question_id</code>：题目ID（整型，必须）</li>
+          <li><code>solving_framework_id</code>：解题框架ID（整型，必须）</li>
           <li><code>code_framework</code>：解题框架的代码（字符串，必须）</li>
         </ul>
       </p>
